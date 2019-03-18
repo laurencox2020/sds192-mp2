@@ -29,4 +29,5 @@ pres_election <- function(data = contributions, name_arg) {
 ```{r 3rd chunk, message = FALSE}
 candidate_lists <- c("P80003353", "P80003338")
 map(candidate_lists, pres_election, data = contributions)
+
 ```
