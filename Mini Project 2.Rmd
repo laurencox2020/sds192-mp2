@@ -13,3 +13,14 @@ load("committees.rda")
 load("contributions.rda")
 ```
 
+```{r 2nd chunk, message = FALSE}
+nancy_data <- function(data = contributions, name_arg) {
+  data %>%
+    filter(name == name_arg) %>%
+    group_by(entity_type, transaction_amt) %>%
+    summarize(total = n()) %>%
+    head(5)
+  
+}
+nancy_data(contributions, name_arg = "NANCY PELOSI FOR CONGRESS")
+```
