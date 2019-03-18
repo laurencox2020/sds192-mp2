@@ -27,7 +27,7 @@ nancy_data <- function(data = contributions, name_arg) {
 
 ```{r 3rd chunk, message = FALSE}
 nancy_plot <- ggplot(data = nancy_data("H8CA05035"), aes(x = entity_type, y = transaction_amt)) +
-  geom_bar()
+geom_bar()
 
 nancy_plot
 ```
