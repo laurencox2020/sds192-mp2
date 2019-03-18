@@ -22,6 +22,13 @@ nancy_data <- function(data = contributions, name_arg) {
     arrange(desc(transaction_amt)) %>%
     head(20)
 }
-nancy_data(contributions, name_arg = "H8CA05035")
+
+```
+
+```{r 3rd chunk, message = FALSE}
+nancy_plot <- ggplot(data = nancy_data("H8CA05035"), aes(x = entity_type, y = transaction_amt)) +
+  geom_bar()
+
+nancy_plot
 ```
 
