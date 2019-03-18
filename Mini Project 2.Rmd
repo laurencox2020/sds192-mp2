@@ -1,0 +1,15 @@
+---
+title: "Mini Project 2"
+author: "Lauren Cox & Emilia Field"
+date: "3/8/2019"
+output: html_document
+---
+
+```{r 1st chunk, message = FALSE}
+library(tidyverse)
+load("house_elections.rda")
+load("candidates.rda")
+load("committees.rda")
+load("contributions.rda")
+```
+
