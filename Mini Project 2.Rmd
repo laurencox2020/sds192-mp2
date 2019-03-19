@@ -14,23 +14,20 @@ load("contributions.rda")
 ```
 
 ```{r 2nd chunk, message = FALSE}
-pres_election <- function(data = contributions, name_arg) {
+cand_contrib <- contributions %>%
+  inner_join(candidates)
+```
+
+```{r 3rd chunk, message = FALSE}
+cand_donations <- function(data = cand_contrib, name_arg) {
   data %>%
-    filter(cand_id == name_arg) %>%
+    filter(cand_party_affiliation == name_arg) %>%
     group_by(entity_type, transaction_amt, cand_id) %>%
-    summarize(total = n()) %>%
-    arrange(desc(transaction_amt)) %>%
-    head(20)
+    summarize(ave_transaction_amt = mean(transaction_amt, na.rm= TRUE))
 }
 
 ```
 
 
-```{r 3rd chunk, message = FALSE}
-candidate_lists <- c("P80003353", "P80003338")
-map(candidate_lists, pres_election, data = contributions)
-```
 
-```{r 4th chunk, message = FALSE}
-ggplot()
-```
+
