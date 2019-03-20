@@ -29,6 +29,7 @@ cand_function <- function(data) {
     group_by(cand_party_affiliation) %>%
     left_join(entity_data)
 }
+
 cand_donations <- cand_function(cand_contrib)
 ```
 
