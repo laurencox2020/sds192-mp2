@@ -25,7 +25,8 @@ cand_donations <- function(data = cand_contrib, name_arg) {
     group_by(entity_type, transaction_amt, cand_id) %>%
     summarize(ave_transaction_amt = mean(transaction_amt, na.rm= TRUE))
 
-  }
+}
+
 
 ```
 
