@@ -24,8 +24,8 @@ cand_function <- function(data) {
     group_by(entity_type) %>%
     summarize(ave_transaction_amt = mean(transaction_amt, na.rm= TRUE))
   # average transaction amt for the specific entity type
+  
   party_data <- data %>%
-    filter()
     group_by(cand_party_affiliation) %>%
     left_join(entity_data)
 }
