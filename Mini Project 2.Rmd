@@ -24,17 +24,10 @@ cand_contrib <- contributions %>%
 ```{r 3rd chunk, message = FALSE}
 cand_function <- function(data) {
   entity_data <- data %>%
-    filter(entity_type != "") %>%
-    group_by(entity_type) %>%
-    summarize(ave_transaction_amt = mean(transaction_amt, na.rm= TRUE)) %>%
-    arrange(desc(ave_transaction_amt)) %>%
-    head(20)
-  # average transaction amt for the specific entity type
-  
-  party_data <- data %>%
-    filter(cand_party_affiliation == "DEM" | cand_party_affiliation == "REP") %>%
-    group_by(cand_party_affiliation) %>%
-    left_join(entity_data) 
+    filter(entity_type != "", cand_party_affiliation == "DEM" | cand_party_affiliation == "REP") %>%
+    group_by(entity_type, cand_party_affiliation) %>%
+    arrange(desc(transaction_amt))
+    
 }
 
 cand_donations <- cand_function(cand_contrib)
@@ -42,7 +35,7 @@ cand_donations <- cand_function(cand_contrib)
 
 ```{r 4th chunk, message = FALSE, warning = FALSE}
 ggthemr("grape")
-party_donations <- ggplot(cand_donations, aes(x = entity_type, y = ave_transaction_amt, fill = cand_party_affiliation)) +
+party_donations <- ggplot(cand_donations, aes(x = entity_type, y = transaction_amt, fill = cand_party_affiliation)) +
   labs(x = "Entity Type", y = "Average Transaction Amount") +
   geom_bar(stat = "identity", position = "dodge") +
   scale_fill_manual("Party Affiliation", values = c("DEM" = "blue", "REP" = "red"))
