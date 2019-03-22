@@ -1,12 +1,15 @@
 ---
 title: "Mini Project 2"
 author: "Lauren Cox & Emilia Field"
-date: "3/8/2019"
-output: html_document
+date: "3/22/2019"
+output: 
+  html_document:
+    code_folding: hide
 ---
 
 ```{r 1st chunk, message = FALSE}
 library(tidyverse)
+library(ggthemr)
 load("house_elections.rda")
 load("candidates.rda")
 load("committees.rda")
@@ -21,24 +24,38 @@ cand_contrib <- contributions %>%
 ```{r 3rd chunk, message = FALSE}
 cand_function <- function(data) {
   entity_data <- data %>%
+    filter(entity_type != "") %>%
     group_by(entity_type) %>%
-    summarize(ave_transaction_amt = mean(transaction_amt, na.rm= TRUE))
+    summarize(ave_transaction_amt = mean(transaction_amt, na.rm= TRUE)) %>%
+    arrange(desc(ave_transaction_amt)) %>%
+    head(20)
   # average transaction amt for the specific entity type
   
   party_data <- data %>%
+    filter(cand_party_affiliation == "DEM" | cand_party_affiliation == "REP") %>%
     group_by(cand_party_affiliation) %>%
-    left_join(entity_data)
+    left_join(entity_data) 
 }
 
 cand_donations <- cand_function(cand_contrib)
 ```
 
-```{r 4th chunk, message = FALSE}
-party_donations <- ggplot(cand_donations, aes(x = entity_type, y = ave_transaction_amt, color = cand_party_affiliation)) +
-  geom_col()
+```{r 4th chunk, message = FALSE, warning = FALSE}
+ggthemr("grape")
+party_donations <- ggplot(cand_donations, aes(x = entity_type, y = ave_transaction_amt, fill = cand_party_affiliation)) +
+  labs(x = "Entity Type", y = "Average Transaction Amount") +
+  geom_bar(stat = "identity", position = "dodge") +
+  scale_fill_manual("Party Affiliation", values = c("DEM" = "blue", "REP" = "red"))
 
-party_donations
+party_donations +
+  ggtitle("Average Transaction Amount by Entity Type for Democrats & Republicans") +
+  scale_x_discrete(limits = c("CAN", "CCM", "COM", "IND", "ORG", "PAC", "PTY")) +
+  scale_y_continuous(limits = c(0,20000),breaks = c(0,4000,8000,12000,16000,20000))
 ```
+
+^[This is my repository (https://github.com/laurencox2020/sds192-mp2.git)]
+
+
 
 
 
