@@ -1,0 +1,46 @@
+---
+title: "Mini Project 2"
+author: "Lauren Cox & Emilia Field"
+date: "3/8/2019"
+output: html_document
+---
+
+```{r 1st chunk, message = FALSE}
+library(tidyverse)
+load("house_elections.rda")
+load("candidates.rda")
+load("committees.rda")
+load("contributions.rda")
+```
+
+```{r 2nd chunk, message = FALSE}
+cand_contrib <- contributions %>%
+  inner_join(candidates)
+```
+
+```{r 3rd chunk, message = FALSE}
+cand_function <- function(data) {
+  entity_data <- data %>%
+    group_by(entity_type) %>%
+    summarize(ave_transaction_amt = mean(transaction_amt, na.rm= TRUE))
+  # average transaction amt for the specific entity type
+  
+  party_data <- data %>%
+    group_by(cand_party_affiliation) %>%
+    left_join(entity_data)
+}
+
+cand_donations <- cand_function(cand_contrib)
+```
+
+```{r 4th chunk, message = FALSE}
+party_donations <- ggplot(cand_donations, aes(x = entity_type, y = ave_transaction_amt, color = cand_party_affiliation)) +
+  geom_col()
+
+party_donations
+```
+
+
+
+
+
