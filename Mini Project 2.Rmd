@@ -1,15 +1,12 @@
 ---
 title: "Mini Project 2"
 author: "Lauren Cox & Emilia Field"
-date: "3/22/2019"
-output: 
-  html_document:
-    code_folding: hide
+date: "3/8/2019"
+output: html_document
 ---
 
 ```{r 1st chunk, message = FALSE}
 library(tidyverse)
-library(ggthemr)
 load("house_elections.rda")
 load("candidates.rda")
 load("committees.rda")
@@ -24,15 +21,19 @@ cand_contrib <- contributions %>%
 ```{r 3rd chunk, message = FALSE}
 cand_function <- function(data) {
   entity_data <- data %>%
-    filter(entity_type != "", cand_party_affiliation == "DEM" | cand_party_affiliation == "REP") %>%
-    group_by(entity_type, cand_party_affiliation) %>%
-    arrange(desc(transaction_amt))
-    
+    group_by(entity_type) %>%
+    summarize(ave_transaction_amt = mean(transaction_amt, na.rm= TRUE))
+  # average transaction amt for the specific entity type
+  
+  party_data <- data %>%
+    group_by(cand_party_affiliation) %>%
+    left_join(entity_data)
 }
 
 cand_donations <- cand_function(cand_contrib)
 ```
 
+<<<<<<< HEAD
 ```{r 4th chunk, message = FALSE, warning = FALSE}
 ggthemr("grape")
 party_donations <- ggplot(cand_donations, aes(x = entity_type, y = transaction_amt, fill = cand_party_affiliation)) +
@@ -47,7 +48,14 @@ party_donations +
 
 ^[This is my repository (https://github.com/laurencox2020/sds192-mp2.git)]
 
+=======
+```{r 4th chunk, message = FALSE}
+party_donations <- ggplot(cand_donations, aes(x = entity_type, y = ave_transaction_amt, color = cand_party_affiliation)) +
+  geom_col()
+>>>>>>> 4dc5fcb0540637892a2a7a6550041c9e00880806
 
+party_donations
+```
 
 
 
