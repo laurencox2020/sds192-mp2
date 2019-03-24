@@ -18,7 +18,7 @@ load("contributions.rda")
 
 ```{r 2nd chunk, message = FALSE}
 cand_contrib <- contributions %>%
-  inner_join(candidates)
+  inner_join(candidates, by = c("cand_id" = "cand_id"))
 ```
 
 ```{r 3rd chunk, message = FALSE}
@@ -42,8 +42,7 @@ party_donations <- ggplot(cand_donations, aes(x = entity_type, y = transaction_a
 
 party_donations +
   ggtitle("Average Transaction Amount by Entity Type for Democrats & Republicans") +
-  scale_x_discrete(limits = c("CAN", "CCM", "COM", "IND", "ORG", "PAC", "PTY")) +
-  scale_y_continuous(limits = c(0,20000),breaks = c(0,4000,8000,12000,16000,20000))
+  scale_x_discrete(limits = c("CAN", "CCM", "COM", "IND", "ORG", "PAC", "PTY"))  
 ```
 
 ^[This is my repository (https://github.com/laurencox2020/sds192-mp2.git)]
